@@ -7,7 +7,17 @@ import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.api.extension.ParameterResolver
 import org.junit.jupiter.api.extension.TestInstancePostProcessor
 
-
+/**
+ * This class is designed as a base class for test extensions that need to be initialized/teared down
+ * once and are required to be executable in both package test runs and single test classes, but perform operations
+ * that are too expensive to execute before/after every test class.
+ * Examples are databases, container orchestration or insertion of large datasets.
+ *
+ * <p>FlexiScope will detect its first run and call the setUp()/tearDown() methods
+ * only once in the corresponding scope.
+ *
+ * <p>Use the @FlexiScoped annotation to inject your FlexiScope implementation via constructor
+ */
 abstract class FlexiScope : TestInstancePostProcessor, ParameterResolver, BeforeAllCallback, ExtensionContext.Store.CloseableResource {
     lateinit var context: ExtensionContext
 
